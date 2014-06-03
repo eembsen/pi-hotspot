@@ -3,12 +3,12 @@
 
 ## Instructions
 1. Create a ssh keypair
-2. Specify the location of the public key in `bootstrap.conf`
-3. Specify the the other configuration in `bootstrap.conf`
-4. If needed, change the `vars` section in `ansible/config/site.yml`
+2. Specify the custom settings in `bootstrap.conf`
+3. Create the host_vars file as described in 'Configuration'
+4. Run `./bootstrap.sh`
 
 ## Configuration
-Place the configuration in `ansible\config\host_vars\localhost.yml`
+Place the configuration in `ansible/config/host_vars/localhost.yml`
 This is an example of the configuration
 ```
 ---
