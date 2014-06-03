@@ -1,0 +1,4 @@
+- name: Restart hostapd
+  service:
+    name=hostapd
+    state=restarted

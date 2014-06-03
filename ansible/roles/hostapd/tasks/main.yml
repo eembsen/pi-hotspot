@@ -1,0 +1,24 @@
+---
+- name: Install main package
+  apt:
+    name=hostapd
+
+- name: Hostapd config file
+  template:
+    src=hostapd.conf
+    dest=/etc/hostapd/hostapd.conf
+  notify:
+  - Restart hostapd
+
+- name: Enable config file
+  lineinfile:
+    dest=/etc/default/hostapd
+    line='DAEMON_CONF=/etc/hostapd/hostapd.conf'
+  notify:
+  - Restart hostapd
+
+- name: Ensure the hostapd service is running and enabled
+  service:
+    name=hostapd
+    state=started
+    enabled=yes

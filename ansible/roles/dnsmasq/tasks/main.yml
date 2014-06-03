@@ -1,0 +1,30 @@
+---
+- name: Install main package
+  apt:
+    name=dnsmasq
+
+- name: Nameservers config file
+  template:
+    src=nameservers.conf
+    dest=/etc/nameservers.conf
+  notify:
+  - Restart dnsmasq
+
+- name: Direct local traffic to dnsmasq
+  lineinfile:
+    dest=/etc/resolv.conf
+    regexp=^nameserver
+    line='nameserver 127.0.0.1'
+
+- name: Dnsmasq config file
+  template:
+    src=dnsmasq.conf
+    dest=/etc/dnsmasq.conf
+  notify:
+  - Restart dnsmasq
+
+- name: Ensure the dnsmasq service is running and enabled
+  service:
+    name=dnsmasq
+    state=started
+    enabled=yes

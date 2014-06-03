@@ -1,0 +1,6 @@
+- name: Install default packages
+  apt: name={{ item }}
+  with_items:
+    - unzip
+    - python-pip
+

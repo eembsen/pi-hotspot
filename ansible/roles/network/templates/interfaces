@@ -1,0 +1,19 @@
+# {{ ansible_managed }}
+
+auto eth0
+iface lo inet loopback
+
+auto lo
+iface eth0 inet dhcp
+
+{% for interface in ansible_interfaces %}
+{% if interface.startswith('wlan') %}
+{% set fact = 'ansible_' ~ interface %}
+{% if hostvars[inventory_hostname][fact]['macaddress'] == wlan_local.macaddress %}
+auto wlan0
+iface {{ hostvars[inventory_hostname][fact]['device'] }} inet static
+  address {{ wlan_local.ipaddress }}
+  netmask 255.255.255.0
+{% endif %}
+{% endif %}
+{% endfor %}
