@@ -1,0 +1,14 @@
+- name: Check kernel forwaring status
+  command: cat /proc/sys/net/ipv4/ip_forward
+  register: ip_forward
+  changed_when: False
+  always_run: yes
+
+- name: Enable forwaring in the kernel
+  shell: echo 1 > /proc/sys/net/ipv4/ip_forward
+  when: ip_forward.stdout == '0'
+
+- name: Persist forwaring so it is active after reboot
+  lineinfile:
+    dest=/etc/sysctl.conf
+    line=net.ipv4.ip_forward=1

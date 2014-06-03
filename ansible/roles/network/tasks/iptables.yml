@@ -1,0 +1,23 @@
+- name: Get iptables filter rules
+  shell: iptables -L
+  register: iptables_filter_rules
+  always_run: yes
+  changed_when: False
+
+- name: Get iptables nat rules
+  shell: iptables -L -t nat
+  register: iptables_nat_rules
+  always_run: yes
+  changed_when: False
+
+- name: Add NAT routing rule
+  command: iptables -t nat -A POSTROUTING -o {{ forward_device }} -j MASQUERADE -m comment --comment "nat_routing"
+  when: iptables_nat_rules.stdout.find("nat_routing") == -1
+
+- name: Add rule to forward traffic
+  command: iptables -A FORWARD -i {{ wlan_local.device }} -o {{ forward_device }} -j ACCEPT -m comment --comment "forward_traffic"
+  when: iptables_filter_rules.stdout.find('forward_traffic') == -1
+
+- name: Add rule to accept responses
+  command: iptables -A FORWARD -i {{ forward_device }} -o {{ wlan_local.device }} -m state --state RELATED,ESTABLISHED -j ACCEPT -m comment --comment "accept_response"
+  when: iptables_filter_rules.stdout.find('accept_response') == -1

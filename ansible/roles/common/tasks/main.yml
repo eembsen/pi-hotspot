@@ -3,4 +3,6 @@
   with_items:
     - unzip
     - python-pip
-
+    - elinks
+    - lynx
+    - links

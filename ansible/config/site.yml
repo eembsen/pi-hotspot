@@ -1,26 +1,9 @@
 ---
 - hosts: all
   sudo: yes
-  vars:
-    nameservers:
-      - 8.8.8.8
-      - 8.8.4.4
-    dhcp:
-      start: 192.168.200.100
-      end: 192.168.200.199
-    wlan_local:
-      macaddress: e8:94:f6:15:54:63
-      ipaddress: 192.168.200.1
-    ssid: FBI
-    passphrase: NotVerySecret
-    iptables_rules:
-      - iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-      - iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-      - iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
   roles:
     - common
     - network
     - dnsmasq
     - hostapd
-    - iptables
     - cron

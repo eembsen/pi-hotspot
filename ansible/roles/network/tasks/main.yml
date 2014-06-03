@@ -1,11 +1,3 @@
-- name: Configure network interfaces
-  template:
-    src=interfaces
-    dest=/etc/network/interfaces
-  register: result
-
-- name: Restart network interfaces
-  shell: ifdown {{ item }} && ifup {{ item }}
-  when: result|changed
-  with_items:
-    - "{{ ansible_interfaces }}"
+- include: interfaces.yml
+- include: forward.yml
+- include: iptables.yml

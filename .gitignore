@@ -1,2 +1,4 @@
 
 keys/
+
+ansible/config/host_vars/localhost.yml
