@@ -3,19 +3,15 @@
 auto lo
 iface lo inet loopback
 
-auto eth0
 iface eth0 inet dhcp
 
-# TODO
-# Check if interface with specified macaddress exists via ansible_interfaces
 auto wlan0
 iface wlan0 inet static
   address {{ local_network.ipaddress }}
   netmask 255.255.255.0
   hwaddress {{ local_network.macaddress }}
 
-# TODO
-# Check if interface with specified macaddress exists via ansible_interfaces
 auto wlan1
 iface wlan1 inet dhcp
-  hwaddress {{ upstream_network.macaddress }}
+#  hwaddress {{ upstream_network.macaddress }}
+  wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf

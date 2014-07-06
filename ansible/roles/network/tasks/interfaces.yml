@@ -4,8 +4,12 @@
     dest=/etc/network/interfaces
   register: result
 
+- name: Configure upstream network
+  template:
+    src=wpa_supplicant.conf
+    dest=/etc/wpa_supplicant/wpa_supplicant.conf
+  register: result_wpa
+
 - name: Restart network interfaces
-  shell: ifdown {{ item }} && ifup {{ item }}
-  when: result|changed
-  with_items:
-    - "{{ ansible_interfaces }}"
+  shell: ifdown -a && ifup -a
+  when: result|changed or result_wpa|changed

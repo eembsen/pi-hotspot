@@ -1,3 +1,4 @@
+- hostname: name="{{ hostname }}"
 - include: interfaces.yml
 - include: forward.yml
 - include: iptables.yml

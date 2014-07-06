@@ -15,9 +15,9 @@
   when: iptables_nat_rules.stdout.find("nat_routing") == -1
 
 - name: Add rule to forward traffic
-  command: iptables -A FORWARD -i {{ wlan_local.device }} -o {{ forward_device }} -j ACCEPT -m comment --comment "forward_traffic"
+  command: iptables -A FORWARD -i {{ local_network.device }} -o {{ forward_device }} -j ACCEPT -m comment --comment "forward_traffic"
   when: iptables_filter_rules.stdout.find('forward_traffic') == -1
 
 - name: Add rule to accept responses
-  command: iptables -A FORWARD -i {{ forward_device }} -o {{ wlan_local.device }} -m state --state RELATED,ESTABLISHED -j ACCEPT -m comment --comment "accept_response"
+  command: iptables -A FORWARD -i {{ forward_device }} -o {{ local_network.device }} -m state --state RELATED,ESTABLISHED -j ACCEPT -m comment --comment "accept_response"
   when: iptables_filter_rules.stdout.find('accept_response') == -1
